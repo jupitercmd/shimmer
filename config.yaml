@@ -1,0 +1,111 @@
+# editions.minecraftVersion is the exact version string passed to Modrinth's
+# game_versions filter. "full" targets 26.1.2 rather than something older,
+# since that's the newest version that still covers Particle Rain, Cave Dust,
+# Atmospheric Fauna, and the original Particular together — mods like
+# Effective (capped 1.21.1) and Wakes (capped 1.21.11) don't share a common
+# floor with those, so they're left out even in Full, covered by their
+# stand-ins instead.
+
+editions:
+  full:
+    name: Full
+    minecraftVersion: "26.1.2"
+    loader: fabric
+    summary: Every mod, including ones not yet ported to 26.2
+
+  latest:
+    name: Latest
+    minecraftVersion: "26.2"
+    loader: fabric
+    summary: Current version, ~75% of mods, alternatives swapped in where needed
+
+  full-iris:
+    name: Full (Iris)
+    minecraftVersion: "26.1.2"
+    loader: fabric
+    summary: Full edition, Iris-compatible mods only, ships with Iris
+
+  latest-iris:
+    name: Latest (Iris)
+    minecraftVersion: "26.2"
+    loader: fabric
+    summary: Latest edition, Iris-compatible mods only, ships with Iris
+
+mods:
+  - id: sodium
+    editions: [full, latest, full-iris, latest-iris]
+  - id: lithium
+    editions: [full, latest, full-iris, latest-iris]
+  - id: ferrite-core
+    editions: [full, latest, full-iris, latest-iris]
+  - id: c2me-fabric
+    editions: [full, latest, full-iris, latest-iris]
+  - id: krypton
+    editions: [full, latest, full-iris, latest-iris]
+  - id: immediatelyfast
+    editions: [full, latest, full-iris, latest-iris]
+  - id: entityculling
+    editions: [full, latest, full-iris, latest-iris]
+  - id: particle-core
+    editions: [full, latest, full-iris, latest-iris]
+  - id: dynamic-fps
+    editions: [full, latest, full-iris, latest-iris]
+
+  - id: iris
+    editions: [full-iris, latest-iris]
+
+  - id: fabric-api
+    editions: [full, latest, full-iris, latest-iris]
+  - id: cloth-config
+    editions: [full, latest, full-iris, latest-iris]
+  - id: fzzy-config
+    editions: [full, latest, full-iris, latest-iris]
+  - id: midnightlib
+    editions: [full, latest, full-iris, latest-iris]
+  - id: polytone
+    editions: [full, latest, full-iris, latest-iris]
+  - id: entity-model-features
+    editions: [full, latest, full-iris, latest-iris]
+  - id: entitytexturefeatures
+    editions: [full, latest, full-iris, latest-iris]
+
+  - id: particular-reforged
+    editions: [latest, latest-iris]
+  - id: particular
+    editions: [full, full-iris]
+  - id: cave-dust
+    editions: [full, full-iris]
+  - id: snow-imprints
+    editions: [full, latest, full-iris, latest-iris]
+  - id: mc2-interactive-foliage
+    editions: [full, latest, full-iris, latest-iris]
+  - id: world-alive
+    editions: [full, latest, full-iris, latest-iris]
+  - id: atmospheric-fauna
+    editions: [full, full-iris]
+  - id: windy
+    editions: [full, latest, full-iris, latest-iris]
+  - id: subtle-effects
+    editions: [full, latest, full-iris, latest-iris]
+  - id: fallingleaves
+    editions: [full, latest, full-iris, latest-iris]
+  - id: atmospherics
+    editions: [full, latest, full-iris, latest-iris]
+  - id: particle-rain
+    editions: [full, full-iris]
+  - id: immersive-storms
+    editions: [full, latest, full-iris, latest-iris]
+  - id: wavify
+    editions: [latest, latest-iris]
+  - id: ripple
+    editions: [latest, latest-iris]
+
+resourcepacks:
+  - id: unshade
+    editions: [full, latest, full-iris, latest-iris]
+  - id: sunbathing-godrays
+    editions: [full, latest, full-iris, latest-iris]
+  - id: fresh-animations
+    editions: [full, latest, full-iris, latest-iris]
+  - id: primes-hd-textures
+    editions: [full, latest, full-iris, latest-iris]
