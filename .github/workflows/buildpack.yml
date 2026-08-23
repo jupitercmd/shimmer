@@ -1,0 +1,77 @@
+name: Build Modpacks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "config.yaml"
+      - "overrides/**"
+      - "scripts/**"
+  workflow_dispatch:
+    inputs:
+      editions:
+        description: "Comma-separated editions to build"
+        required: false
+        default: "full,latest,full-iris,latest-iris"
+      exclude:
+        description: "Comma-separated Modrinth ids to exclude from this run only"
+        required: false
+        default: ""
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - id: set
+        run: |
+          RAW="${{ github.event.inputs.editions || 'full,latest,full-iris,latest-iris' }}"
+          JSON=$(echo "$RAW" | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R . | jq -sc .)
+          echo "matrix={\"edition\":$JSON}" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build ${{ matrix.edition }}
+        env:
+          EXCLUDE_MODS: ${{ github.event.inputs.exclude }}
+        run: node scripts/build-mrpack.mjs ${{ matrix.edition }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.edition }}
+          path: |
+            build/${{ matrix.edition }}.mrpack
+            build/${{ matrix.edition }}/skipped.json
+          if-no-files-found: ignore
+
+  release:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          files: artifacts/**/*.mrpack
+          fail_on_unmatched_files: false
